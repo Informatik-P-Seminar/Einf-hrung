@@ -1,0 +1,72 @@
+package com.example.wolfgangpfeffer.gyzquiz;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+* Created by Wolfgang Pfeffer on 12.06.2018.
+*/
+
+public class DataHandler {
+
+    // String-Konstanten fuer Datenbank
+    public static final String DATENBANK_NAME = "quizDB";
+    public static final int DATENBANK_VERSION = 1;
+
+    // Referenz-Attribut fuer Verwalten der Datenbank
+    private DataBaseHelper dbHelper;
+    // Attribut fuer die DataBaseHelper-Klasse
+    private Context ctx;
+    // Attribut fuer die verwendete Datenbank
+    private SQLiteDatabase db;
+
+    /**
+    * Konstruktor der Klasse DataHandler
+    * @param ctx aktuellem Context (jeweilige Activity-Klasse, in der ein Objekt dieser Klasse
+    *            erzeugt wird)
+    */
+    public DataHandler(Context ctx) {
+        this.ctx = ctx;
+        this.dbHelper = new DataBaseHelper(ctx);
+    }
+
+    /**
+    * Speichert in der Variable db unsere Datenbank mit Schreibrechten
+    */
+    private void openWrite() {
+        this.db = dbHelper.getWritableDatabase();
+    }
+
+    /**
+    * Speichert in der Variable db unsere Datenbank mit Leserechten
+    */
+    private void openRead() {
+        this.db = dbHelper.getReadableDatabase();
+    }
+
+    /**
+    * Nach Ausfuehrung von Lese- oder Schreibzugriffen werden die Zugriffsrechte auf die Datenbank
+    * wieder zurueckgesetzt
+    */
+    private void close() {
+        this.dbHelper.close();
+    }
+
+
+    private static class DataBaseHelper extends SQLiteOpenHelper {
+
+        public DataBaseHelper(Context ctx) {
+            super(ctx, DATENBANK_NAME, null, DATENBANK_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            // Hier erstellen wir die Tabelle quizTable mit den Spalten frage, a, b, c und d
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}        
+    }
+}
